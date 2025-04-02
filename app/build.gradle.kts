@@ -1,7 +1,39 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+//    alias(libs.plugins.androidApplication)
+//    alias(libs.plugins.kotlinAndroid)
+//    alias(libs.plugins.kotlinKapt)
+//    alias(libs.plugins.ksp)
+//
+//
+//
+//
+//
+//
+//        id("com.android.application")
+//        id("org.jetbrains.kotlin.android")
+//        id("com.google.devtools.ksp") // KSP plugin
+//    id("kotlin-kapt") // Required for Room's annotation processing
+
+
+
+
+//    id("com.android.application")
+//        id("org.jetbrains.kotlin.android")
+
+//// This is necessary for Room
+
+
 }
+
+//
+//repositories {
+//    google()
+//    mavenCentral()
+//}
+
+
 
 android {
     namespace = "com.oops.inventory_system"
@@ -40,6 +72,19 @@ android {
 
 dependencies {
 
+
+
+//    implementation(libs.androidx.room.runtime)
+//    ksp(libs.androidx.room.compiler)
+//
+//    implementation(libs.room.runtime)
+//    implementation(libs.room.ktx)
+//    kapt("androidx.room:room-compiler:2.6.1")
+//    ksp("androidx.room:room-compiler:2.6.1")
+
+
+
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -52,3 +97,5 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
+
+
