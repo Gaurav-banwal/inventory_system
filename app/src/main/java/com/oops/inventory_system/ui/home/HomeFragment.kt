@@ -1,15 +1,18 @@
 package com.oops.inventory_system.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.oops.inventory_system.R
 import com.oops.inventory_system.databinding.FragmentHomeBinding
+import com.oops.inventory_system.selection
 
 class HomeFragment : Fragment() {
 
@@ -47,10 +50,8 @@ class HomeFragment : Fragment() {
             }
         })
 
-//        val textView: TextView = binding.textHome
-//        homeViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
+
+
         return root
     }
     private fun performSearch(query: String) {
@@ -58,10 +59,65 @@ class HomeFragment : Fragment() {
     }
 
 
+
+
+
+
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val beverages = view.findViewById<LinearLayout>(R.id.beverages)
+        val noodles = view.findViewById<LinearLayout>(R.id.noodles)
+           val dairy = view.findViewById<LinearLayout>(R.id.dairy)
+        val confectioneries = view.findViewById<LinearLayout>(R.id.confectioneries)
+        val snack = view.findViewById<LinearLayout>(R.id.snacks)
+        val grocery = view.findViewById<LinearLayout>(R.id.groceries)
+
+        beverages.setOnClickListener {
+            openCategory("Beverages")
+        }
+
+        noodles.setOnClickListener {
+            openCategory("Noodles")
+        }
+
+        dairy.setOnClickListener {
+            openCategory("Dairy")
+        }
+        confectioneries.setOnClickListener {
+            openCategory("confectioneries")
+        }
+        snack.setOnClickListener {
+            openCategory("snacks")
+        }
+        grocery.setOnClickListener {
+            openCategory("Groceries")
+        }
+    }
+
+    private fun openCategory(category: String) {
+        val intent = Intent(requireContext(), selection::class.java)
+        intent.putExtra("category_name", category) // Pass category name
+        startActivity(intent)
+    }
+
+
+
+
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+
+
+
+
+
 }
 //
 //

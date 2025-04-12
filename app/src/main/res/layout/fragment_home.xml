@@ -23,7 +23,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/linearLayout5"
+                android:id="@+id/beverages"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
@@ -34,7 +34,10 @@
                 android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/background"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
+                android:onClick="beverages"
                 android:orientation="vertical"
                 tools:ignore="MissingConstraints">
 
@@ -59,10 +62,12 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/noodles"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
@@ -97,7 +102,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayout4"
+                android:id="@+id/snacks"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
@@ -107,6 +112,8 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 android:background="@drawable/background"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -141,12 +148,14 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/linearLayout6"
+                android:id="@+id/groceries"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
@@ -177,7 +186,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayout2"
+                android:id="@+id/confectioneries"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
@@ -187,6 +196,8 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 android:background="@drawable/background"
                 android:contentDescription="TODO"
                 android:gravity="center"
@@ -215,7 +226,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayout3"
+                android:id="@+id/dairy"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
@@ -225,6 +236,8 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
                 android:background="@drawable/background"
                 android:gravity="center"
                 android:orientation="vertical"
