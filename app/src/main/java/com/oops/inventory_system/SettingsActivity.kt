@@ -1,20 +1,27 @@
 package com.oops.inventory_system
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class SettingsActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_settings)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        val profileText: TextView = findViewById(R.id.yourProfile)
+        val aboutUsText: TextView = findViewById(R.id.aboutUs)
+
+        profileText.setOnClickListener {
+            Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show()
+            // TODO: Navigate to Profile screen later
+        }
+
+        aboutUsText.setOnClickListener {
+            Toast.makeText(this, "About Us clicked", Toast.LENGTH_SHORT).show()
+            // TODO: Navigate to About Us screen later
         }
     }
 }
