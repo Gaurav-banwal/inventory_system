@@ -20,8 +20,24 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         aboutUsText.setOnClickListener {
-            Toast.makeText(this, "About Us clicked", Toast.LENGTH_SHORT).show()
-            // TODO: Navigate to About Us screen later
+            val aboutMessage = """
+        This app is developed by Team OOPS.
+        It's designed to manage inventory with ease for students and small businesses.
+        
+        Version: 1.0.0
+        Contact: team.oops@example.com
+    """.trimIndent()
+
+            val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+            builder.setTitle("About Us")
+            builder.setMessage(aboutMessage)
+            builder.setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            val dialog = builder.create()
+            dialog.show()
         }
+
     }
 }
