@@ -24,7 +24,7 @@ class SettingsActivity : AppCompatActivity() {
         This app is developed by Team OOPS.
         It's designed to manage inventory with ease for students and small businesses.
         
-        Version: 1.0.0
+        Team Members:
         Contact: team.oops@example.com
     """.trimIndent()
 
