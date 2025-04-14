@@ -40,7 +40,7 @@ class selection : AppCompatActivity() {
         listView.setOnItemClickListener { parent, view, position, id ->
             val selectedItem = parent.getItemAtPosition(position) as String
 
-            val intent = Intent(this, details::class.java).apply {
+            val intent = Intent(this, Details::class.java).apply {
                 putExtra("item_details", selectedItem)
             }
             startActivity(intent)
