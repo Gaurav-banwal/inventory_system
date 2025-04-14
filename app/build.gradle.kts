@@ -1,13 +1,18 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+  //  id("com.google.gms.google-services")
 //    alias(libs.plugins.androidApplication)
 //    alias(libs.plugins.kotlinAndroid)
 //    alias(libs.plugins.kotlinKapt)
 //    alias(libs.plugins.ksp)
 //
 //
-//
+//plugins {
+//    id("com.android.application")
+//    id("org.jetbrains.kotlin.android")
+//    id("com.google.gms.google-services")
+//}
 //
 //
 //
@@ -27,7 +32,7 @@ plugins {
 
 }
 
-//
+////
 //repositories {
 //    google()
 //    mavenCentral()
@@ -74,6 +79,7 @@ dependencies {
 
 
 
+
 //    implementation(libs.androidx.room.runtime)
 //    ksp(libs.androidx.room.compiler)
 //
@@ -82,8 +88,9 @@ dependencies {
 //    kapt("androidx.room:room-compiler:2.6.1")
 //    ksp("androidx.room:room-compiler:2.6.1")
 
-
-
+//implementation("com.google.firebase:firebase-auth:23.2.0")
+//    implementation("com.google.firebase:firebase-auth-ktx:22.0.0")
+//    implementation("com.google.firebase:firebase-database-ktx:20.0.7")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

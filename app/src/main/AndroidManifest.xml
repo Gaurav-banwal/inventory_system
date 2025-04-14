@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Inventory_system"
         tools:targetApi="31">
         <activity
+            android:name=".details"
+            android:exported="false" />
+        <activity
             android:name=".SettingsActivity"
             android:exported="false" />
         <activity

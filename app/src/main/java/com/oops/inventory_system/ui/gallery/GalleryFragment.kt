@@ -44,7 +44,10 @@ class GalleryFragment : Fragment() {
         listView.adapter = adapter
 
         // Example: Adding an item dynamically
-        addItem(1, 2, "Example Item")
+        addItem(1, 2, "Example Item1")
+        addItem(3, 2, "Example Item2")
+        addItem(4, 2, "Example Item3")
+        addItem(5, 2, "Example Item4")
     }
 
     private fun addItem(trackId: Int, quantity: Int, name: String) {

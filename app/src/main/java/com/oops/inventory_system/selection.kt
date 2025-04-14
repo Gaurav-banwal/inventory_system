@@ -1,5 +1,6 @@
 package com.oops.inventory_system
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.ListView
@@ -36,7 +37,22 @@ class selection : AppCompatActivity() {
 
 
 
+        listView.setOnItemClickListener { parent, view, position, id ->
+            val selectedItem = parent.getItemAtPosition(position) as String
+
+            val intent = Intent(this, details::class.java).apply {
+                putExtra("item_details", selectedItem)
+            }
+            startActivity(intent)
+        }
+
+
+
+
+
     }
+
+
 
 
 
