@@ -61,7 +61,8 @@ class AddItem : DialogFragment() {
             view.findViewById<EditText>(R.id.textField1),
             view.findViewById<EditText>(R.id.textField2),
             view.findViewById<EditText>(R.id.textField3),
-            view.findViewById<EditText>(R.id.textField4)
+            view.findViewById<EditText>(R.id.textField4),
+            view.findViewById<EditText>(R.id.textField5)
         )
 
         applyButton.isEnabled = false // Disable initially
