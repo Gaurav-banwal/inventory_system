@@ -42,6 +42,8 @@ class GalleryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         listView = view.findViewById(R.id.listview)
         adapter = ItemAdapter(itemList, requireContext())
         listView.adapter = adapter
