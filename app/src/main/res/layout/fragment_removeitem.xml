@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@android:color/white">
+
+        <!-- Track ID Input -->
+        <EditText
+            android:id="@+id/trackIdField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Track ID"
+            android:textSize="18sp"
+            android:padding="12dp"/>
+
+        <!-- OR Text -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OR"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingVertical="8dp"/>
+
+        <!-- Item Name Input -->
+        <EditText
+            android:id="@+id/itemNameField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Item Name"
+            android:textSize="18sp"
+            android:padding="12dp"/>
+
+        <!-- Remove Button -->
+        <Button
+            android:id="@+id/removeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/purple_500"
+            android:text="Remove"
+            android:textColor="@android:color/white"
+            android:padding="12dp"
+            android:enabled="false"/>
+    </LinearLayout>
+</ScrollView>

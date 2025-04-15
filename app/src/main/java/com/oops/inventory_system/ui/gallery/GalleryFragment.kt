@@ -8,10 +8,12 @@ import android.widget.Button
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+
 import com.oops.inventory_system.AddItem
 import com.oops.inventory_system.Item
 import com.oops.inventory_system.ItemAdapter
 import com.oops.inventory_system.R
+import com.oops.inventory_system.RemoveItem
 import com.oops.inventory_system.databinding.FragmentGalleryBinding
 
 
@@ -60,10 +62,69 @@ class GalleryFragment : Fragment() {
             val dialog = AddItem()
             dialog.show(childFragmentManager, "AddItemDialog")
         }
+
+
+
+        val removeButton = view.findViewById<Button>(R.id.remove) // Replace with actual button ID
+
+        removeButton.setOnClickListener {
+            val dialog = RemoveItem()
+            dialog.show(parentFragmentManager, "RemoveItemDialog")
+        }
+
+
+
+
+
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private fun addItem(trackId: Int, quantity: Int, name: String) {
         itemList.add(Item(trackId, quantity, name))
         adapter.notifyDataSetChanged()
     }
+
+
+
+
+
+
+//
+//    private fun onItemRemoved(trackId: String, itemName: String) {
+//        val iterator = itemList.iterator()
+//        while (iterator.hasNext()) {
+//            val item = iterator.next()
+//            if (item.trackId.toString() == trackId || item.name == itemName) {
+//                iterator.remove()
+//            }
+//        }
+//        adapter.notifyDataSetChanged()
+//    }
+
+
+
+
+
+
+
+
+
+
 }
