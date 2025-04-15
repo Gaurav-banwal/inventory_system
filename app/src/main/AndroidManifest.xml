@@ -35,7 +35,8 @@
             android:name=".Login"
             android:exported="false" />
         <activity
-            android:name=".details"
+
+         android:name=".Details"
             android:exported="false" />
         <activity
             android:name=".SettingsActivity"

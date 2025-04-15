@@ -49,7 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="Item Name: Chips"
+                    android:text="Item Name:"
                     android:textColor="#388E3C"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -59,7 +59,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="detailTextView" />
+                    android:text="detailTextView"
+                    android:textColor="@color/purple_500"
+                    android:textSize="24sp" />
             </LinearLayout>
 
             <TextView
@@ -67,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:text="Product ID: ID001"
+                android:text="Product ID: "
                 android:textColor="#2E7D32"
                 android:textSize="16sp" />
 
@@ -76,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:text="Quantity: 50"
+                android:text="Quantity: "
                 android:textColor="#2E7D32"
                 android:textSize="16sp" />
 
@@ -85,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:text="Location: Aisle 3"
+                android:text="Location: "
                 android:textColor="#388E3C"
                 android:textSize="16sp" />
 
@@ -94,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:text="Price: ₹20"
+                android:text="Price: "
                 android:textColor="#388E3C"
                 android:textSize="16sp" />
         </LinearLayout>
