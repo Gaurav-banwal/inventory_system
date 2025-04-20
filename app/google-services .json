@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "672139415301",
-    "project_id": "inventory-system-c045a",
-    "storage_bucket": "inventory-system-c045a.firebasestorage.app"
+    "project_number": "409028638954",
+    "project_id": "inventory-management-oops",
+    "storage_bucket": "inventory-management-oops.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:672139415301:android:bcf32ae1f111fc2a45b16c",
+        "mobilesdk_app_id": "1:409028638954:android:ff30d80818a745db8a7f93",
         "android_client_info": {
           "package_name": "com.oops.inventory_system"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBCYDw2bIsfmtTQY07Doq_ltiEgVSwgbG0"
+          "current_key": "AIzaSyDuyFPg9Rd2B3CAMCW4eeAcnrRb-aJWo2M"
         }
       ],
       "services": {
