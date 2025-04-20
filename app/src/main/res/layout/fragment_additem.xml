@@ -14,6 +14,7 @@
         android:background="@android:color/white">
 
         <!-- ID Field -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +36,6 @@
                 tools:ignore="TouchTargetSizeCheck" />
         </LinearLayout>
 
-        <!-- Name Field -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,7 +57,6 @@
                 android:padding="8dp" />
         </LinearLayout>
 
-        <!-- Amount Field -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -79,6 +78,15 @@
                 android:padding="8dp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"/>
+
+        <!-- Name Field -->
+
+        <!-- Amount Field -->
+
         <!-- Spot Field -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -94,11 +102,12 @@
 
             <EditText
                 android:id="@+id/textField4"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Location Stored"
                 android:padding="8dp"
-                tools:ignore="TouchTargetSizeCheck" />
+                tools:ignore="TouchTargetSizeCheck"/>
         </LinearLayout>
 
         <!-- MRP Field -->
@@ -124,6 +133,7 @@
         </LinearLayout>
 
         <!-- Apply Button -->
+
         <Button
             android:id="@+id/applyButton"
             android:layout_width="match_parent"
