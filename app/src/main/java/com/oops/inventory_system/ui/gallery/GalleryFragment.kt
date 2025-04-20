@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ListView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.oops.inventory_system.AddItem
+import com.oops.inventory_system.EditItem
 import com.oops.inventory_system.Item
 import com.oops.inventory_system.ItemAdapter
 import com.oops.inventory_system.R
@@ -22,6 +25,8 @@ class GalleryFragment : Fragment() {
     private lateinit var listView: ListView
     private lateinit var adapter: ItemAdapter
     private val itemList = mutableListOf<Item>()
+    private val db = FirebaseFirestore.getInstance()
+    private var firestoreListener: ListenerRegistration? = null
 
     private var _binding: FragmentGalleryBinding? = null
     private val binding get() = _binding!!
@@ -39,92 +44,126 @@ class GalleryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        // Remove Firestore listener when fragment is destroyed
+        firestoreListener?.remove()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        try {
+            listView = view.findViewById(R.id.listview)
+            if (listView == null) {
+                Toast.makeText(context, "ListView is null!", Toast.LENGTH_LONG).show()
+                return
+            }
+            
+            adapter = ItemAdapter(itemList, requireContext())
+            listView.adapter = adapter
+            
+            Toast.makeText(context, "ListView setup complete", Toast.LENGTH_SHORT).show()
 
+            // Load items from Firestore instead of adding manually
+            loadItemsFromFirestore()
+            
+            // Handle item clicks to edit
+            listView.setOnItemClickListener { _, _, position, _ ->
+                Toast.makeText(context, "Clicked on item: ${itemList[position].name}", Toast.LENGTH_SHORT).show()
+                openEditItemDialog(itemList[position])
+            }
 
-        listView = view.findViewById(R.id.listview)
-        adapter = ItemAdapter(itemList, requireContext())
-        listView.adapter = adapter
+            // Initialize and set button listener
+            val addButton = view.findViewById<Button>(R.id.addButton)
+            if (addButton != null) {
+                addButton.setOnClickListener {
+                    val dialog = AddItem()
+                    dialog.show(childFragmentManager, "AddItemDialog")
+                    // The list will be updated automatically via Firestore listener
+                }
+            }
 
-        // Example items
-        addItem(1, 2, "Example Item1")
-        addItem(3, 2, "Example Item2")
-        addItem(4, 2, "Example Item3")
-        addItem(5, 2, "Example Item4")
-
-        // Initialize and set button listener
-        val addButton = view.findViewById<Button>(R.id.addButton) // Make sure you add this button in XML
-        addButton.setOnClickListener {
-            val dialog = AddItem()
-            dialog.show(childFragmentManager, "AddItemDialog")
+            val removeButton = view.findViewById<Button>(R.id.remove)
+            if (removeButton != null) {
+                removeButton.setOnClickListener {
+                    val dialog = RemoveItem()
+                    dialog.show(parentFragmentManager, "RemoveItemDialog")
+                    // The list will be updated automatically via Firestore listener
+                }
+            }
+        } catch (e: Exception) {
+            Toast.makeText(context, "Error initializing gallery: ${e.message}", Toast.LENGTH_LONG).show()
+            e.printStackTrace()
         }
-
-
-
-        val removeButton = view.findViewById<Button>(R.id.remove) // Replace with actual button ID
-
-        removeButton.setOnClickListener {
-            val dialog = RemoveItem()
-            dialog.show(parentFragmentManager, "RemoveItemDialog")
-        }
-
-
-
-
-
     }
 
+    private fun loadItemsFromFirestore() {
+        // Clear existing items
+        itemList.clear()
+        
+        // Set up a real-time listener for inventory changes
+        firestoreListener = db.collection("inventory")
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Toast.makeText(context, "Error loading items: ${e.message}", Toast.LENGTH_SHORT).show()
+                    return@addSnapshotListener
+                }
 
+                if (snapshot != null) {
+                    // Clear the list to refresh with new data
+                    itemList.clear()
+                    
+                    for (document in snapshot.documents) {
+                        try {
+                            val trackId = (document.get("trackId") as? Number)?.toInt() ?: 0
+                            val name = document.getString("name") ?: "Unknown"
+                            val quantity = (document.get("quantity") as? Number)?.toInt() ?: 0
+                            val category = document.getString("category") ?: ""
+                            val location = document.getString("location") ?: ""
+                            val price = (document.get("price") as? Number)?.toInt() ?: 0
+                            
+                            // Create Item object with all fields
+                            val item = Item(
+                                trackId = trackId, 
+                                quantity = quantity, 
+                                name = name,
+                                category = category,
+                                location = location,
+                                price = price
+                            )
+                            itemList.add(item)
+                        } catch (e: Exception) {
+                            // Log or handle errors for individual items
+                            continue
+                        }
+                    }
+                    
+                    // Update the UI
+                    adapter.notifyDataSetChanged()
+                }
+            }
+    }
 
+    private fun openEditItemDialog(item: Item) {
+        try {
+            Toast.makeText(context, "Opening edit dialog for: ${item.name}", Toast.LENGTH_SHORT).show()
+            val editDialog = EditItem.newInstance(
+                trackId = item.trackId,
+                name = item.name,
+                category = item.category,
+                quantity = item.quantity,
+                location = item.location,
+                price = item.price
+            )
+            editDialog.show(childFragmentManager, "EditItemDialog")
+        } catch (e: Exception) {
+            Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            e.printStackTrace()
+        }
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // This method is kept for reference but no longer used
     private fun addItem(trackId: Int, quantity: Int, name: String) {
         itemList.add(Item(trackId, quantity, name))
         adapter.notifyDataSetChanged()
     }
-
-
-
-
-
-
-//
-//    private fun onItemRemoved(trackId: String, itemName: String) {
-//        val iterator = itemList.iterator()
-//        while (iterator.hasNext()) {
-//            val item = iterator.next()
-//            if (item.trackId.toString() == trackId || item.name == itemName) {
-//                iterator.remove()
-//            }
-//        }
-//        adapter.notifyDataSetChanged()
-//    }
-
-
-
-
-
-
-
-
-
-
 }

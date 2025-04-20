@@ -11,7 +11,9 @@ import androidx.fragment.app.DialogFragment
 import com.google.firebase.firestore.FirebaseFirestore
 
 class RemoveItem : DialogFragment() {
-    val db = FirebaseFirestore.getInstance()
+    private val db = FirebaseFirestore.getInstance()
+    private val firestoreManager = FirestoreManager()
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,7 +25,7 @@ class RemoveItem : DialogFragment() {
         super.onStart()
         dialog?.let {
             val width = ViewGroup.LayoutParams.MATCH_PARENT  // Full screen width
-            val height = (resources.displayMetrics.heightPixels * 0.4).toInt() // 60% of screen height
+            val height = (resources.displayMetrics.heightPixels * 0.4).toInt() // 40% of screen height
             it.window?.setLayout(width, height)
         }
     }
@@ -52,9 +54,49 @@ class RemoveItem : DialogFragment() {
         removeButton.setOnClickListener {
             val trackId = trackIdField.text.toString()
             val itemName = itemNameField.text.toString()
-
-            Toast.makeText(requireContext(), "Removed: $trackId / $itemName", Toast.LENGTH_SHORT).show()
-            dismiss() // Close the dialog
+            
+            if (trackId.isNotEmpty()) {
+                // If Track ID is provided, use it to delete the item
+                firestoreManager.deleteItem(trackId) { success, error ->
+                    if (success) {
+                        Toast.makeText(requireContext(), "Item with ID $trackId removed successfully", Toast.LENGTH_SHORT).show()
+                        dismiss()
+                    } else {
+                        Toast.makeText(requireContext(), "Error removing item: ${error?.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else if (itemName.isNotEmpty()) {
+                // If only item name is provided, need to query for the item first
+                db.collection("inventory")
+                    .whereEqualTo("name", itemName)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        if (documents.isEmpty) {
+                            Toast.makeText(requireContext(), "No item found with name: $itemName", Toast.LENGTH_SHORT).show()
+                        } else {
+                            var deletedCount = 0
+                            val totalToDelete = documents.size()
+                            
+                            for (document in documents) {
+                                val docId = document.id
+                                firestoreManager.deleteItem(docId) { success, error ->
+                                    if (success) {
+                                        deletedCount++
+                                        if (deletedCount == totalToDelete) {
+                                            Toast.makeText(requireContext(), "Removed $deletedCount items with name: $itemName", Toast.LENGTH_SHORT).show()
+                                            dismiss()
+                                        }
+                                    } else {
+                                        Toast.makeText(requireContext(), "Error removing some items: ${error?.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(requireContext(), "Error searching for items: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+            }
         }
     }
 }

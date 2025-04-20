@@ -3,62 +3,100 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants">
 
     <LinearLayout
-        android:layout_width="411dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="8dp"
-         android:background="@drawable/background"
+        android:background="@drawable/background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/subtractButton"
-            android:layout_width="71dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
             android:text="-"
+            android:focusable="false"
+            android:clickable="true"
             tools:ignore="TouchTargetSizeCheck" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:orientation="vertical">
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:focusable="false">
 
             <TextView
                 android:id="@+id/itemName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
                 android:text="Item Name"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" 
+                android:focusable="false"/>
 
-            <TextView
-                android:id="@+id/textView3"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
+                android:orientation="horizontal"
+                android:focusable="false">
+
+                <TextView
+                    android:id="@+id/itemCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Category"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="8dp" 
+                    android:focusable="false"/>
+
+                <TextView
+                    android:id="@+id/itemLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="8dp" 
+                    android:focusable="false"/>
+
+                <TextView
+                    android:id="@+id/itemPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="₹0"
+                    android:textSize="14sp"
+                    android:focusable="false"/>
+            </LinearLayout>
         </LinearLayout>
 
         <TextView
             android:id="@+id/quantity"
-            android:layout_width="95dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
             android:text="0"
-            android:textSize="18sp" />
+            android:textSize="18sp" 
+            android:layout_gravity="center"
+            android:focusable="false"
+            android:padding="8dp"/>
 
         <Button
             android:id="@+id/addButton"
-            android:layout_width="77dp"
+            android:layout_width="48dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0"
             android:text="+"
+            android:focusable="false"
+            android:clickable="true"
             tools:ignore="TouchTargetSizeCheck" />
 
     </LinearLayout>

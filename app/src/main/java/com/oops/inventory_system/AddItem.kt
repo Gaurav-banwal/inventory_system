@@ -29,7 +29,7 @@ class AddItem : DialogFragment() {
     override fun onStart() {
         super.onStart()
         dialog?.let {
-            val height = Resources.getSystem().displayMetrics.heightPixels * 0.5 // Half screen height
+            val height = Resources.getSystem().displayMetrics.heightPixels * 0.8 // Increased from 0.5 to 0.8
             it.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, height.toInt())
         }
     }
@@ -51,10 +51,10 @@ class AddItem : DialogFragment() {
         val textFields = listOf(
             view.findViewById<EditText>(R.id.textField1),
             view.findViewById<EditText>(R.id.textField2),
+            view.findViewById<EditText>(R.id.textField6),
             view.findViewById<EditText>(R.id.textField3),
             view.findViewById<EditText>(R.id.textField4),
             view.findViewById<EditText>(R.id.textField5)
-            //view.findViewById<EditText>(R.id.textcat)
         )
 
         applyButton.isEnabled = false // Disable initially
@@ -79,37 +79,44 @@ class AddItem : DialogFragment() {
         applyButton.setOnClickListener {
             val inputs = textFields.map { it.text.toString() }
 
-            if (inputs.size < 5 || inputs.any { it.isEmpty() }) {
+            if (inputs.size < 6 || inputs.any { it.isEmpty() }) {
                 Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val price = inputs[2].toIntOrNull() ?: -1
-            val quantity = inputs[4].toIntOrNull() ?: -1
+            val trackId = inputs[0].toIntOrNull() ?: -1
+            val name = inputs[1]
+            val category = inputs[2]
+            val quantity = inputs[3].toIntOrNull() ?: -1
+            val location = inputs[4]
+            val price = inputs[5].toIntOrNull() ?: -1
 
-            if (price < 0 || quantity < 0) {
-                Toast.makeText(requireContext(), "Invalid Price or Quantity", Toast.LENGTH_SHORT).show()
+            if (price < 0 || quantity < 0 || trackId < 0) {
+                Toast.makeText(requireContext(), "Invalid Track ID, Price or Quantity", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             val itemData = hashMapOf(
-                "trackId" to inputs[0],
-                "category" to inputs[1],
-                "price" to price,
-                "location" to inputs[3],
-                "quantity" to quantity
+                "trackId" to trackId,
+                "name" to name,
+                "category" to category,
+                "quantity" to quantity,
+                "location" to location,
+                "price" to price
             )
 
             val firestoreManager = FirestoreManager()
             firestoreManager.addItem(
-                itemData["trackId"]?.toString() ?: "",
-                itemData["category"]?.toString() ?: "",
-                itemData["price"] as Int,
+                itemData["trackId"] as Int,
+                itemData["name"]?.toString() ?: "",
+                itemData["quantity"] as Int,
                 itemData["location"]?.toString() ?: "",
-                itemData["quantity"] as Int
+                itemData["price"] as Int,
+                itemData["category"]?.toString() ?: ""
             ) { success, error ->
                 if (success) {
                     Toast.makeText(requireContext(), "Item saved successfully!", Toast.LENGTH_SHORT).show()
+                    dismiss() // Close the dialog after successful save
                 } else {
                     Toast.makeText(requireContext(), "Error saving item: ${error?.message}", Toast.LENGTH_SHORT).show()
                 }

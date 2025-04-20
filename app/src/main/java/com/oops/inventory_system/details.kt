@@ -26,13 +26,24 @@ class Details : AppCompatActivity() {
             }
         }
 
-        Toast.makeText(this, "Details Activity Loaded!", Toast.LENGTH_SHORT).show()
+        // Get all item details from intent
+        val itemName = intent.getStringExtra("item_name") ?: "Unknown Item"
+        val itemId = intent.getStringExtra("item_id") ?: "N/A"
+        val itemQuantity = intent.getStringExtra("item_quantity") ?: "0"
+        val itemCategory = intent.getStringExtra("item_category") ?: "N/A"
+        val itemLocation = intent.getStringExtra("item_location") ?: "N/A"
+        val itemPrice = intent.getStringExtra("item_price") ?: "0"
 
-        val detailTextView: TextView = findViewById(R.id.itemname)
-        val itemDetails = intent.getStringExtra("item_details") ?: "No Details Available"
-        Toast.makeText(this, "Received: $itemDetails", Toast.LENGTH_SHORT).show() // Debugging
-        detailTextView.text = itemDetails
+        // Set the data to the TextViews
+        findViewById<TextView>(R.id.itemname).text = itemName
+        findViewById<TextView>(R.id.productId).text = "Product ID: $itemId"
+        findViewById<TextView>(R.id.itemQuantity).text = "Quantity: $itemQuantity"
+        findViewById<TextView>(R.id.itemLocation).text = "Location: $itemLocation"
+        findViewById<TextView>(R.id.marketPrice).text = "Price: ₹$itemPrice"
 
+        // Display category in the title or elsewhere if needed
+        supportActionBar?.title = "$itemName Details"
+        
         // Back button handling
         val backButton = findViewById<Button>(R.id.button_back)
         backButton.setOnClickListener {

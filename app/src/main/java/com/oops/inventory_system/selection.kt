@@ -2,6 +2,8 @@ package com.oops.inventory_system
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
@@ -12,8 +14,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.firestore.FirebaseFirestore
 
-val db = FirebaseFirestore.getInstance()
 class selection : AppCompatActivity() {
+    private val db = FirebaseFirestore.getInstance()
+    private val itemsList = mutableListOf<Item>()
+    private lateinit var adapter: ItemListAdapter
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -22,41 +27,118 @@ class selection : AppCompatActivity() {
         val category = intent.getStringExtra("category_name")
         Toast.makeText(this, "Selected Category: $category", Toast.LENGTH_SHORT).show()
 
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             supportActionBar?.title = category
-            window.statusBarColor= ContextCompat.getColor(this,R.color.brandgreen)
+            window.statusBarColor = ContextCompat.getColor(this, R.color.brandgreen)
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-
-        val itemList = listOf("Item 1", "Item 2", "Item 3", "Item 4","Item 5","Item 6")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, itemList)
+        // Set up ListView with a custom adapter for items
         val listView = findViewById<ListView>(R.id.listview)
+        adapter = ItemListAdapter(this, itemsList)
         listView.adapter = adapter
 
-
-
-        listView.setOnItemClickListener { parent, view, position, id ->
-            val selectedItem = parent.getItemAtPosition(position) as String
-
-            val intent = Intent(this, Details::class.java).apply {
-                putExtra("item_details", selectedItem)
+        // Set up search functionality
+        val searchView = findViewById<androidx.appcompat.widget.SearchView>(R.id.search_view)
+        searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
             }
-            startActivity(intent)
+            
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterItems(newText)
+                return true
+            }
+        })
+
+        // Get category from intent and fetch items from Firestore
+        category?.let { 
+            fetchItemsByCategory(it) 
         }
 
-
-
-
-
+        // Handle item clicks
+        listView.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = itemsList[position]
+            openItemDetails(selectedItem)
+        }
     }
 
+    private fun fetchItemsByCategory(category: String) {
+        // Show loading indicator
+        Toast.makeText(this, "Loading items...", Toast.LENGTH_SHORT).show()
+        
+        db.collection("inventory")
+            .whereEqualTo("category", category)
+            .get()
+            .addOnSuccessListener { documents ->
+                itemsList.clear()
+                
+                if (documents.isEmpty) {
+                    Toast.makeText(this, "No items found in this category", Toast.LENGTH_SHORT).show()
+                } else {
+                    for (document in documents) {
+                        try {
+                            val trackId = (document.get("trackId") as? Number)?.toInt() ?: 0
+                            val name = document.getString("name") ?: "Unknown"
+                            val quantity = (document.get("quantity") as? Number)?.toInt() ?: 0
+                            val itemCategory = document.getString("category") ?: ""
+                            val location = document.getString("location") ?: ""
+                            val price = (document.get("price") as? Number)?.toInt() ?: 0
+                            
+                            val item = Item(
+                                trackId = trackId,
+                                quantity = quantity,
+                                name = name,
+                                category = itemCategory,
+                                location = location,
+                                price = price
+                            )
+                            
+                            itemsList.add(item)
+                        } catch (e: Exception) {
+                            // Log or handle errors for individual items
+                            continue
+                        }
+                    }
+                    adapter.notifyDataSetChanged()
+                    Toast.makeText(this, "Found ${itemsList.size} items", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error loading items: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 
+    private fun openItemDetails(item: Item) {
+        val intent = Intent(this, Details::class.java).apply {
+            putExtra("item_name", item.name)
+            putExtra("item_id", item.trackId.toString())
+            putExtra("item_quantity", item.quantity.toString())
+            putExtra("item_category", item.category)
+            putExtra("item_location", item.location)
+            putExtra("item_price", item.price.toString())
+        }
+        startActivity(intent)
+    }
 
-
-
-
+    private fun filterItems(query: String?) {
+        if (query.isNullOrEmpty()) {
+            // If query is empty, show all items for the category
+            adapter.updateItems(itemsList)
+            return
+        }
+        
+        // Filter the items based on the query
+        val filteredList = itemsList.filter { item ->
+            item.name.contains(query, ignoreCase = true) || 
+            item.trackId.toString() == query ||
+            item.category.contains(query, ignoreCase = true) ||
+            item.location.contains(query, ignoreCase = true)
+        }
+        
+        // Update the adapter with filtered list
+        adapter.updateItems(filteredList)
+    }
 }
