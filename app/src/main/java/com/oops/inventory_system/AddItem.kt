@@ -34,25 +34,6 @@ class AddItem : DialogFragment() {
 
 
 
-
-
-
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        val applyButton = view.findViewById<Button>(R.id.applyButton)
-//
-//        applyButton.visibility = View.VISIBLE // Force visibility
-//
-//        applyButton.setOnClickListener {
-//            val input1 = view.findViewById<EditText>(R.id.textField1).text.toString()
-//            val input2 = view.findViewById<EditText>(R.id.textField2).text.toString()
-//            Toast.makeText(requireContext(), "Entered: $input1, $input2", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -65,7 +46,7 @@ class AddItem : DialogFragment() {
             view.findViewById<EditText>(R.id.textField5)
         )
 
-        applyButton.isEnabled = false // Disable initially
+        applyButton.isEnabled = false // Disable till entry filled
 
         val textWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {

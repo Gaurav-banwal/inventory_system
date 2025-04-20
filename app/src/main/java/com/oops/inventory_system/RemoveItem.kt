@@ -55,5 +55,7 @@ class RemoveItem : DialogFragment() {
             Toast.makeText(requireContext(), "Removed: $trackId / $itemName", Toast.LENGTH_SHORT).show()
             dismiss() // Close the dialog
         }
+
     }
+
 }
