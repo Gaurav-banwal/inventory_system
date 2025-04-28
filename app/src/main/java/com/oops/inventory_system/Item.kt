@@ -6,5 +6,6 @@ data class Item(
     val name: String,
     val category: String = "",
     val location: String = "",
-    val price: Int = 0
+    val price: Int = 0,
+    val buyprice :Int=0
 )
