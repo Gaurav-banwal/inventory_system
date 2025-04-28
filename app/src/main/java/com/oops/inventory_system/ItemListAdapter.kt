@@ -25,11 +25,15 @@ class ItemListAdapter(private val context: Context, private var items: List<Item
         // Find views
         val nameTextView = view.findViewById<TextView>(R.id.item_name)
         val priceTextView = view.findViewById<TextView>(R.id.item_price)
+        val buyPriceTextView = view.findViewById<TextView?>(R.id.item_buyprice)
         val quantityTextView = view.findViewById<TextView>(R.id.item_quantity)
         
         // Set data to views
         nameTextView.text = item.name
         priceTextView.text = "₹${item.price}"
+        if (buyPriceTextView != null) {
+            buyPriceTextView.text = "CP: ₹${item.buyprice}"
+        }
         quantityTextView.text = "Qty: ${item.quantity}"
         
         return view

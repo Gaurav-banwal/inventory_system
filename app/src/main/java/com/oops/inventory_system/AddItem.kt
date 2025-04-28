@@ -80,7 +80,7 @@ class AddItem : DialogFragment() {
         applyButton.setOnClickListener {
             val inputs = textFields.map { it.text.toString() }
 
-            if (inputs.size < 6 || inputs.any { it.isEmpty() }) {
+            if (inputs.size < 7 || inputs.any { it.isEmpty() }) {
                 Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -91,9 +91,10 @@ class AddItem : DialogFragment() {
             val quantity = inputs[3].toIntOrNull() ?: -1
             val location = inputs[4]
             val price = inputs[5].toIntOrNull() ?: -1
+            val buyprice = inputs[6].toIntOrNull() ?: -1
 
-            if (price < 0 || quantity < 0 || trackId < 0) {
-                Toast.makeText(requireContext(), "Invalid Track ID, Price or Quantity", Toast.LENGTH_SHORT).show()
+            if (price < 0 || quantity < 0 || trackId < 0 || buyprice < 0) {
+                Toast.makeText(requireContext(), "Invalid Track ID, Price, Cost Price or Quantity", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -103,7 +104,8 @@ class AddItem : DialogFragment() {
                 "category" to category,
                 "quantity" to quantity,
                 "location" to location,
-                "price" to price
+                "price" to price,
+                "buyprice" to buyprice
             )
 
             val firestoreManager = FirestoreManager()
@@ -113,7 +115,8 @@ class AddItem : DialogFragment() {
                 itemData["quantity"] as Int,
                 itemData["location"]?.toString() ?: "",
                 itemData["price"] as Int,
-                itemData["category"]?.toString() ?: ""
+                itemData["category"]?.toString() ?: "",
+                itemData["buyprice"] as Int
             ) { success, error ->
                 if (success) {
                     Toast.makeText(requireContext(), "Item saved successfully!", Toast.LENGTH_SHORT).show()

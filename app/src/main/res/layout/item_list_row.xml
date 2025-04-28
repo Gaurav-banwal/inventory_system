@@ -31,6 +31,16 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
+        android:id="@+id/item_buyprice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CP: ₹0"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_price"/>
+
+    <TextView
         android:id="@+id/item_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

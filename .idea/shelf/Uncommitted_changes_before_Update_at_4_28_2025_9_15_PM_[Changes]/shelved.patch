@@ -1,0 +1,391 @@
+Index: .idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch	(revision d2254b5c91703f769520e0c0d3bba92ba5ed7f7b)
++++ /dev/null	(revision d2254b5c91703f769520e0c0d3bba92ba5ed7f7b)
+@@ -1,372 +0,0 @@
+-Index: app/src/main/java/com/oops/inventory_system/selection.kt
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.oops.inventory_system\r\n\r\nimport android.content.Intent\r\nimport android.os.Bundle\r\nimport android.widget.ArrayAdapter\r\nimport android.widget.ListView\r\nimport android.widget.Toast\r\nimport androidx.activity.enableEdgeToEdge\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport androidx.core.content.ContextCompat\r\nimport androidx.core.view.ViewCompat\r\nimport androidx.core.view.WindowInsetsCompat\r\n\r\nclass selection : AppCompatActivity() {\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        enableEdgeToEdge()\r\n        setContentView(R.layout.activity_selection)\r\n\r\n        val category = intent.getStringExtra(\"category_name\")\r\n        Toast.makeText(this, \"Selected Category: $category\", Toast.LENGTH_SHORT).show()\r\n\r\n\r\n        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->\r\n            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())\r\n            supportActionBar?.title = category\r\n            window.statusBarColor= ContextCompat.getColor(this,R.color.brandgreen)\r\n            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)\r\n            insets\r\n        }\r\n\r\n\r\n        val itemList = listOf(\"Item 1\", \"Item 2\", \"Item 3\", \"Item 4\",\"Item 5\",\"Item 6\")\r\n        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, itemList)\r\n        val listView = findViewById<ListView>(R.id.listview)\r\n        listView.adapter = adapter\r\n\r\n\r\n\r\n        listView.setOnItemClickListener { parent, view, position, id ->\r\n            val selectedItem = parent.getItemAtPosition(position) as String\r\n\r\n            val intent = Intent(this, details::class.java).apply {\r\n                putExtra(\"item_details\", selectedItem)\r\n            }\r\n            startActivity(intent)\r\n        }\r\n\r\n\r\n\r\n\r\n\r\n    }\r\n\r\n\r\n\r\n\r\n\r\n\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/oops/inventory_system/selection.kt b/app/src/main/java/com/oops/inventory_system/selection.kt
+---- a/app/src/main/java/com/oops/inventory_system/selection.kt	(revision 981aa3c8a4e71ff31b72ec4b32d072b2fd7ea5aa)
+-+++ b/app/src/main/java/com/oops/inventory_system/selection.kt	(date 1744624413956)
+-@@ -40,7 +40,7 @@
+-         listView.setOnItemClickListener { parent, view, position, id ->
+-             val selectedItem = parent.getItemAtPosition(position) as String
+- 
+--            val intent = Intent(this, details::class.java).apply {
+-+            val intent = Intent(this, Details::class.java).apply {
+-                 putExtra("item_details", selectedItem)
+-             }
+-             startActivity(intent)
+-Index: app/src/main/java/com/oops/inventory_system/ui/gallery/GalleryFragment.kt
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.oops.inventory_system.ui.gallery\r\n\r\nimport android.os.Bundle\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport android.widget.ListView\r\nimport androidx.fragment.app.Fragment\r\nimport androidx.lifecycle.ViewModelProvider\r\nimport com.oops.inventory_system.Item\r\nimport com.oops.inventory_system.ItemAdapter\r\nimport com.oops.inventory_system.R\r\nimport com.oops.inventory_system.databinding.FragmentGalleryBinding\r\n\r\nclass GalleryFragment : Fragment() {\r\n\r\n    private lateinit var listView: ListView\r\n    private lateinit var adapter: ItemAdapter\r\n    private val itemList = mutableListOf<Item>() // Correct type\r\n\r\n    private var _binding: FragmentGalleryBinding? = null\r\n    private val binding get() = _binding!!\r\n\r\n    override fun onCreateView(\r\n        inflater: LayoutInflater,\r\n        container: ViewGroup?,\r\n        savedInstanceState: Bundle?\r\n    ): View {\r\n        val galleryViewModel = ViewModelProvider(this).get(GalleryViewModel::class.java)\r\n        _binding = FragmentGalleryBinding.inflate(inflater, container, false)\r\n        return binding.root\r\n    }\r\n\r\n    override fun onDestroyView() {\r\n        super.onDestroyView()\r\n        _binding = null\r\n    }\r\n\r\n    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {\r\n        super.onViewCreated(view, savedInstanceState)\r\n\r\n        listView = view.findViewById(R.id.listview) // Corrected ListView ID\r\n        adapter = ItemAdapter(itemList, requireContext()) // Use 'requireContext()' for Fragment context\r\n        listView.adapter = adapter\r\n\r\n        // Example: Adding an item dynamically\r\n        addItem(1, 2, \"Example Item1\")\r\n        addItem(3, 2, \"Example Item2\")\r\n        addItem(4, 2, \"Example Item3\")\r\n        addItem(5, 2, \"Example Item4\")\r\n    }\r\n\r\n    private fun addItem(trackId: Int, quantity: Int, name: String) {\r\n        itemList.add(Item(trackId, quantity, name)) // Using correct 'Item' class\r\n        adapter.notifyDataSetChanged() // Refresh ListView\r\n    }\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/oops/inventory_system/ui/gallery/GalleryFragment.kt b/app/src/main/java/com/oops/inventory_system/ui/gallery/GalleryFragment.kt
+---- a/app/src/main/java/com/oops/inventory_system/ui/gallery/GalleryFragment.kt	(revision 981aa3c8a4e71ff31b72ec4b32d072b2fd7ea5aa)
+-+++ b/app/src/main/java/com/oops/inventory_system/ui/gallery/GalleryFragment.kt	(date 1744661030664)
+-@@ -4,19 +4,22 @@
+- import android.view.LayoutInflater
+- import android.view.View
+- import android.view.ViewGroup
+-+import android.widget.Button
+- import android.widget.ListView
+- import androidx.fragment.app.Fragment
+- import androidx.lifecycle.ViewModelProvider
+-+import com.oops.inventory_system.AddItem
+- import com.oops.inventory_system.Item
+- import com.oops.inventory_system.ItemAdapter
+- import com.oops.inventory_system.R
+- import com.oops.inventory_system.databinding.FragmentGalleryBinding
+- 
+-+
+- class GalleryFragment : Fragment() {
+- 
+-     private lateinit var listView: ListView
+-     private lateinit var adapter: ItemAdapter
+--    private val itemList = mutableListOf<Item>() // Correct type
+-+    private val itemList = mutableListOf<Item>()
+- 
+-     private var _binding: FragmentGalleryBinding? = null
+-     private val binding get() = _binding!!
+-@@ -39,19 +42,26 @@
+-     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+-         super.onViewCreated(view, savedInstanceState)
+- 
+--        listView = view.findViewById(R.id.listview) // Corrected ListView ID
+--        adapter = ItemAdapter(itemList, requireContext()) // Use 'requireContext()' for Fragment context
+-+        listView = view.findViewById(R.id.listview)
+-+        adapter = ItemAdapter(itemList, requireContext())
+-         listView.adapter = adapter
+- 
+--        // Example: Adding an item dynamically
+-+        // Example items
+-         addItem(1, 2, "Example Item1")
+-         addItem(3, 2, "Example Item2")
+-         addItem(4, 2, "Example Item3")
+-         addItem(5, 2, "Example Item4")
+-+
+-+        // Initialize and set button listener
+-+        val addButton = view.findViewById<Button>(R.id.addButton) // Make sure you add this button in XML
+-+        addButton.setOnClickListener {
+-+            val dialog = AddItem()
+-+            dialog.show(childFragmentManager, "AddItemDialog")
+-+        }
+-     }
+- 
+-     private fun addItem(trackId: Int, quantity: Int, name: String) {
+--        itemList.add(Item(trackId, quantity, name)) // Using correct 'Item' class
+--        adapter.notifyDataSetChanged() // Refresh ListView
+-+        itemList.add(Item(trackId, quantity, name))
+-+        adapter.notifyDataSetChanged()
+-     }
+- }
+-\ No newline at end of file
+-Index: app/src/main/java/com/oops/inventory_system/details.kt
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.oops.inventory_system\r\n\r\nimport android.os.Bundle\r\nimport android.widget.TextView\r\nimport androidx.activity.enableEdgeToEdge\r\nimport androidx.appcompat.app.AppCompatActivity\r\nimport androidx.core.view.ViewCompat\r\nimport androidx.core.view.WindowInsetsCompat\r\n\r\nclass details : AppCompatActivity() {\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        enableEdgeToEdge()\r\n        setContentView(R.layout.activity_details)\r\n        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->\r\n            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())\r\n            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)\r\n            insets\r\n        }\r\n\r\n\r\n            val detailTextView: TextView = findViewById(R.id.detailTextView)\r\n            val itemDetails = intent.getStringExtra(\"item_details\")\r\n\r\n            detailTextView.text = itemDetails\r\n\r\n\r\n\r\n    }\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/oops/inventory_system/details.kt b/app/src/main/java/com/oops/inventory_system/details.kt
+---- a/app/src/main/java/com/oops/inventory_system/details.kt	(revision 981aa3c8a4e71ff31b72ec4b32d072b2fd7ea5aa)
+-+++ b/app/src/main/java/com/oops/inventory_system/details.kt	(date 1744625191649)
+-@@ -1,30 +1,42 @@
+- package com.oops.inventory_system
+- 
+- import android.os.Bundle
+-+import android.widget.Button
+- import android.widget.TextView
+-+import android.widget.Toast
+- import androidx.activity.enableEdgeToEdge
+- import androidx.appcompat.app.AppCompatActivity
+-+import androidx.constraintlayout.widget.ConstraintLayout
+- import androidx.core.view.ViewCompat
+- import androidx.core.view.WindowInsetsCompat
+- 
+--class details : AppCompatActivity() {
+-+class Details : AppCompatActivity() {
+-     override fun onCreate(savedInstanceState: Bundle?) {
+-         super.onCreate(savedInstanceState)
+-         enableEdgeToEdge()
+-         setContentView(R.layout.activity_details)
+--        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+--            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+--            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+--            insets
+-+
+-+        // Apply window insets safely
+-+        val mainLayout = findViewById<ConstraintLayout>(R.id.main)
+-+        mainLayout?.let {
+-+            ViewCompat.setOnApplyWindowInsetsListener(it) { v, insets ->
+-+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+-+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+-+                insets
+-+            }
+-         }
+- 
+-+        Toast.makeText(this, "Details Activity Loaded!", Toast.LENGTH_SHORT).show()
+- 
+--            val detailTextView: TextView = findViewById(R.id.detailTextView)
+--            val itemDetails = intent.getStringExtra("item_details")
+--
+--            detailTextView.text = itemDetails
+-+        val detailTextView: TextView = findViewById(R.id.itemname)
+-+        val itemDetails = intent.getStringExtra("item_details") ?: "No Details Available"
+-+        Toast.makeText(this, "Received: $itemDetails", Toast.LENGTH_SHORT).show() // Debugging
+-+        detailTextView.text = itemDetails
+- 
+--
+--
+-+        // Back button handling
+-+        val backButton = findViewById<Button>(R.id.button_back)
+-+        backButton.setOnClickListener {
+-+            finish() // Properly closes the activity
+-+        }
+-     }
+- }
+-\ No newline at end of file
+-Index: app/src/main/res/layout/fragment_gallery.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".ui.gallery.GalleryFragment\"\r\n    tools:ignore=\"VisualLintBounds\">\r\n\r\n    <androidx.appcompat.widget.SearchView\r\n        android:id=\"@+id/search_view\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:queryHint=\"Search here...\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\" />\r\n\r\n    <ListView\r\n        android:id=\"@+id/listview\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"0dp\"\r\n        android:layout_margin=\"8dp\"\r\n\r\n        android:divider=\"@color/design_default_color_background\"\r\n        android:dividerHeight=\"10dp\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/search_view\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\" />\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/layout/fragment_gallery.xml b/app/src/main/res/layout/fragment_gallery.xml
+---- a/app/src/main/res/layout/fragment_gallery.xml	(revision 981aa3c8a4e71ff31b72ec4b32d072b2fd7ea5aa)
+-+++ b/app/src/main/res/layout/fragment_gallery.xml	(date 1744659239835)
+-@@ -19,15 +19,39 @@
+- 
+-     <ListView
+-         android:id="@+id/listview"
+--        android:layout_width="match_parent"
+--        android:layout_height="0dp"
+-+        android:layout_width="391dp"
+-+        android:layout_height="543dp"
+-         android:layout_margin="8dp"
+- 
+-         android:divider="@color/design_default_color_background"
+-         android:dividerHeight="10dp"
+--        app:layout_constraintTop_toBottomOf="@+id/search_view"
+-         app:layout_constraintBottom_toBottomOf="parent"
+-+        app:layout_constraintEnd_toEndOf="parent"
+-         app:layout_constraintStart_toStartOf="parent"
+--        app:layout_constraintEnd_toEndOf="parent" />
+-+        app:layout_constraintTop_toBottomOf="@+id/search_view" />
+-+
+-+    <LinearLayout
+-+        android:layout_width="410dp"
+-+        android:layout_height="50dp"
+-+        android:orientation="horizontal"
+-+        app:layout_constraintBottom_toTopOf="@+id/listview"
+-+        app:layout_constraintEnd_toEndOf="parent"
+-+        app:layout_constraintStart_toStartOf="parent"
+-+        app:layout_constraintTop_toBottomOf="@+id/search_view">
+-+
+-+        <Button
+-+            android:id="@+id/addButton"
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"
+-+            android:layout_weight="1"
+-+            android:text="ADD" />
+-+
+-+        <Button
+-+            android:id="@+id/button2"
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"
+-+            android:layout_weight="1"
+-+            android:text="Remove" />
+-+    </LinearLayout>
+- 
+- </androidx.constraintlayout.widget.ConstraintLayout>
+-\ No newline at end of file
+-Index: app/src/main/res/layout/activity_selection.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/main\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:layout_margin=\"2dp\"\r\n    android:layout_marginStart=\"2dp\"\r\n    android:layout_marginLeft=\"2dp\"\r\n    android:layout_marginTop=\"2dp\"\r\n    android:layout_marginEnd=\"2dp\"\r\n    android:layout_marginRight=\"2dp\"\r\n    android:layout_marginBottom=\"2dp\"\r\n    app:layout_marginBaseline=\"2dp\"\r\n    tools:context=\".selection\">\r\n\r\n  <androidx.appcompat.widget.SearchView\r\n      android:id=\"@+id/search_view\"\r\n      android:layout_width=\"match_parent\"\r\n      android:layout_height=\"wrap_content\"\r\n      android:queryHint=\"Search here...\"\r\n      app:layout_constraintEnd_toEndOf=\"parent\"\r\n      app:layout_constraintStart_toStartOf=\"parent\"\r\n      app:layout_constraintTop_toTopOf=\"parent\" />\r\n\r\n  <ListView\r\n      android:id=\"@+id/listview\"\r\n      style=\"@android:style/Widget.DeviceDefault.ExpandableListView\"\r\n      android:layout_width=\"406dp\"\r\n      android:layout_height=\"0dp\"\r\n      android:layout_marginStart=\"1dp\"\r\n      android:layout_marginEnd=\"1dp\"\r\n      android:layout_marginBottom=\"1dp\"\r\n      android:background=\"@color/brandgreen\"\r\n      android:clickable=\"true\"\r\n      android:divider=\"@color/design_default_color_background\"\r\n      android:dividerHeight=\"10dp\"\r\n\r\n\r\n      app:layout_constraintBottom_toBottomOf=\"parent\"\r\n      app:layout_constraintEnd_toEndOf=\"parent\"\r\n      app:layout_constraintStart_toStartOf=\"parent\"\r\n      app:layout_constraintTop_toBottomOf=\"@+id/search_view\" />\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/layout/activity_selection.xml b/app/src/main/res/layout/activity_selection.xml
+---- a/app/src/main/res/layout/activity_selection.xml	(revision 981aa3c8a4e71ff31b72ec4b32d072b2fd7ea5aa)
+-+++ b/app/src/main/res/layout/activity_selection.xml	(date 1744654136872)
+-@@ -27,8 +27,8 @@
+-   <ListView
+-       android:id="@+id/listview"
+-       style="@android:style/Widget.DeviceDefault.ExpandableListView"
+--      android:layout_width="406dp"
+--      android:layout_height="0dp"
+-+      android:layout_width="397dp"
+-+      android:layout_height="553dp"
+-       android:layout_marginStart="1dp"
+-       android:layout_marginEnd="1dp"
+-       android:layout_marginBottom="1dp"
+-@@ -42,4 +42,5 @@
+-       app:layout_constraintEnd_toEndOf="parent"
+-       app:layout_constraintStart_toStartOf="parent"
+-       app:layout_constraintTop_toBottomOf="@+id/search_view" />
+-+
+- </androidx.constraintlayout.widget.ConstraintLayout>
+-\ No newline at end of file
+-Index: app/src/main/res/layout/activity_details.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/main\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".details\">\r\n\r\n    <TextView\r\n        android:id=\"@+id/detailTextView\"\r\n        android:layout_width=\"184dp\"\r\n        android:layout_height=\"75dp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.444\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.131\" />\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/layout/activity_details.xml b/app/src/main/res/layout/activity_details.xml
+---- a/app/src/main/res/layout/activity_details.xml	(revision 981aa3c8a4e71ff31b72ec4b32d072b2fd7ea5aa)
+-+++ b/app/src/main/res/layout/activity_details.xml	(date 1744624724389)
+-@@ -2,19 +2,116 @@
+- <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-     xmlns:app="http://schemas.android.com/apk/res-auto"
+-     xmlns:tools="http://schemas.android.com/tools"
+--    android:id="@+id/main"
+-+    android:id = "@+id/main"
+-     android:layout_width="match_parent"
+-     android:layout_height="match_parent"
+--    tools:context=".details">
+-+    android:background="#FFFFFF"
+-+    android:padding="16dp">
+-+
+-+    <!-- Toolbar -->
+-+<!--    <androidx.appcompat.widget.Toolbar-->
+-+<!--        android:id="@+id/toolbar"-->
+-+<!--        android:layout_width="0dp"-->
+-+<!--        android:layout_height="wrap_content"-->
+-+<!--        android:background="#6A1B9A"-->
+-+<!--        android:title="Item: Chips"-->
+-+<!--        android:titleTextColor="#FFFFFF"-->
+-+<!--        app:layout_constraintTop_toTopOf="parent"-->
+-+<!--        app:layout_constraintStart_toStartOf="parent"-->
+-+<!--        app:layout_constraintEnd_toEndOf="parent" />-->
+-+
+-+    <!-- Card for Item Info -->
+-+    <androidx.cardview.widget.CardView
+-+        android:id="@+id/card_info"
+-+        android:layout_width="0dp"
+-+        android:layout_height="wrap_content"
+-+        android:layout_marginTop="20dp"
+-+        app:cardCornerRadius="12dp"
+-+        app:cardElevation="8dp"
+-+        app:layout_constraintBottom_toBottomOf="parent"
+-+        app:layout_constraintEnd_toEndOf="parent"
+-+        app:layout_constraintStart_toStartOf="parent"
+-+        app:layout_constraintTop_toTopOf="parent">
+-+
+-+        <LinearLayout
+-+            android:layout_width="match_parent"
+-+            android:layout_height="wrap_content"
+-+            android:orientation="vertical"
+-+            android:padding="16dp">
+-+
+-+            <LinearLayout
+-+                android:layout_width="match_parent"
+-+                android:layout_height="match_parent"
+-+                android:orientation="horizontal">
+- 
+--    <TextView
+--        android:id="@+id/detailTextView"
+--        android:layout_width="184dp"
+--        android:layout_height="75dp"
+--        app:layout_constraintBottom_toBottomOf="parent"
+-+                <TextView
+-+                    android:id="@+id/itemName"
+-+                    android:layout_width="wrap_content"
+-+                    android:layout_height="wrap_content"
+-+                    android:layout_marginBottom="8dp"
+-+                    android:text="Item Name: Chips"
+-+                    android:textColor="#388E3C"
+-+                    android:textSize="20sp"
+-+                    android:textStyle="bold" />
+-+
+-+                <TextView
+-+                    android:id="@+id/itemname"
+-+                    android:layout_width="match_parent"
+-+                    android:layout_height="match_parent"
+-+                    android:layout_weight="1"
+-+                    android:text="detailTextView" />
+-+            </LinearLayout>
+-+
+-+            <TextView
+-+                android:id="@+id/productId"
+-+                android:layout_width="wrap_content"
+-+                android:layout_height="wrap_content"
+-+                android:layout_marginBottom="4dp"
+-+                android:text="Product ID: ID001"
+-+                android:textColor="#2E7D32"
+-+                android:textSize="16sp" />
+-+
+-+            <TextView
+-+                android:id="@+id/itemQuantity"
+-+                android:layout_width="wrap_content"
+-+                android:layout_height="wrap_content"
+-+                android:layout_marginBottom="4dp"
+-+                android:text="Quantity: 50"
+-+                android:textColor="#2E7D32"
+-+                android:textSize="16sp" />
+-+
+-+            <TextView
+-+                android:id="@+id/itemLocation"
+-+                android:layout_width="wrap_content"
+-+                android:layout_height="wrap_content"
+-+                android:layout_marginBottom="4dp"
+-+                android:text="Location: Aisle 3"
+-+                android:textColor="#388E3C"
+-+                android:textSize="16sp" />
+-+
+-+            <TextView
+-+                android:id="@+id/marketPrice"
+-+                android:layout_width="wrap_content"
+-+                android:layout_height="wrap_content"
+-+                android:layout_marginBottom="4dp"
+-+                android:text="Price: ₹20"
+-+                android:textColor="#388E3C"
+-+                android:textSize="16sp" />
+-+        </LinearLayout>
+-+    </androidx.cardview.widget.CardView>
+-+
+-+    <!-- Back Button -->
+-+    <Button
+-+        android:id="@+id/button_back"
+-+        android:layout_width="0dp"
+-+        android:layout_height="wrap_content"
+-+        android:layout_marginTop="16dp"
+-+        android:backgroundTint="#388E3C"
+-+        android:text="Back"
+-+        android:textAllCaps="false"
+-+        android:textColor="#000000"
+-         app:layout_constraintEnd_toEndOf="parent"
+--        app:layout_constraintHorizontal_bias="0.444"
+-         app:layout_constraintStart_toStartOf="parent"
+--        app:layout_constraintTop_toTopOf="parent"
+--        app:layout_constraintVertical_bias="0.131" />
+-+        app:layout_constraintTop_toBottomOf="@id/card_info" />
+-+
+- </androidx.constraintlayout.widget.ConstraintLayout>
+-\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml	(revision d2254b5c91703f769520e0c0d3bba92ba5ed7f7b)
++++ /dev/null	(revision d2254b5c91703f769520e0c0d3bba92ba5ed7f7b)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_rebase_[Changes]" date="1744661627782" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before rebase [Changes]" />
+-</changelist>
+\ No newline at end of file

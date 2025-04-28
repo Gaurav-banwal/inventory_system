@@ -75,6 +75,13 @@
                     android:text="₹0"
                     android:textSize="14sp"
                     android:focusable="false"/>
+                <TextView
+                    android:id="@+id/itemBuyPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CP: ₹0"
+                    android:textSize="14sp"
+                    android:focusable="false"/>
             </LinearLayout>
         </LinearLayout>
 

@@ -86,6 +86,7 @@ class selection : AppCompatActivity() {
                             val itemCategory = document.getString("category") ?: ""
                             val location = document.getString("location") ?: ""
                             val price = (document.get("price") as? Number)?.toInt() ?: 0
+                            val buyprice = (document.get("buyprice") as? Number)?.toInt() ?: 0
                             
                             val item = Item(
                                 trackId = trackId,
@@ -93,7 +94,8 @@ class selection : AppCompatActivity() {
                                 name = name,
                                 category = itemCategory,
                                 location = location,
-                                price = price
+                                price = price,
+                                buyprice = buyprice
                             )
                             
                             itemsList.add(item)
@@ -119,6 +121,7 @@ class selection : AppCompatActivity() {
             putExtra("item_category", item.category)
             putExtra("item_location", item.location)
             putExtra("item_price", item.price.toString())
+            putExtra("item_buyprice", item.buyprice.toString())
         }
         startActivity(intent)
     }

@@ -1,5 +1,6 @@
 package com.oops.inventory_system.ui.gallery
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -120,7 +121,7 @@ class GalleryFragment : Fragment() {
                             val category = document.getString("category") ?: ""
                             val location = document.getString("location") ?: ""
                             val price = (document.get("price") as? Number)?.toInt() ?: 0
-                            
+                            val buyprice = (document.get("buyprice") as? Number)?.toInt() ?: 0
                             // Create Item object with all fields
                             val item = Item(
                                 trackId = trackId, 
@@ -128,7 +129,8 @@ class GalleryFragment : Fragment() {
                                 name = name,
                                 category = category,
                                 location = location,
-                                price = price
+                                price = price,
+                                buyprice = buyprice
                             )
                             itemList.add(item)
                         } catch (e: Exception) {
@@ -152,13 +154,28 @@ class GalleryFragment : Fragment() {
                 category = item.category,
                 quantity = item.quantity,
                 location = item.location,
-                price = item.price
+                price = item.price,
+                buyprice = item.buyprice
             )
             editDialog.show(childFragmentManager, "EditItemDialog")
         } catch (e: Exception) {
             Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_LONG).show()
             e.printStackTrace()
         }
+    }
+
+    // Add this function to open details with buyprice
+    private fun openItemDetails(item: Item) {
+        val intent = Intent(requireContext(), com.oops.inventory_system.Details::class.java).apply {
+            putExtra("item_name", item.name)
+            putExtra("item_id", item.trackId.toString())
+            putExtra("item_quantity", item.quantity.toString())
+            putExtra("item_category", item.category)
+            putExtra("item_location", item.location)
+            putExtra("item_price", item.price.toString())
+            putExtra("item_buyprice", item.buyprice.toString())
+        }
+        startActivity(intent)
     }
 
     // This method is kept for reference but no longer used
