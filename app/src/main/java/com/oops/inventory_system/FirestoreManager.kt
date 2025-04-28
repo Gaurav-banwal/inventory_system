@@ -7,14 +7,15 @@ class FirestoreManager {
     private val db = FirebaseFirestore.getInstance()
 
     // Add a new inventory item
-    fun addItem(trackId: Int, name: String, quantity: Int, location: String, price: Int, category: String, onComplete: (Boolean, Exception?) -> Unit) {
+    fun addItem(trackId: Int, name: String, quantity: Int, location: String, price: Int, category: String, buyprice: Int, onComplete: (Boolean, Exception?) -> Unit) {
         val itemData = hashMapOf(
             "trackId" to trackId,
             "name" to name,
             "quantity" to quantity,
             "location" to location,
             "price" to price,
-            "category" to category
+            "category" to category,
+            "buyprice" to buyprice
         )
 
         db.collection("inventory").document(trackId.toString())

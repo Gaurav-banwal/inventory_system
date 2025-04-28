@@ -27,6 +27,7 @@ class ItemAdapter(private val items: MutableList<Item>, private val context: Con
         val categoryText = view.findViewById<TextView>(R.id.itemCategory)
         val locationText = view.findViewById<TextView>(R.id.itemLocation)
         val priceText = view.findViewById<TextView>(R.id.itemPrice)
+        val buyPriceText = view.findViewById<TextView?>(R.id.itemBuyPrice)
         val addButton = view.findViewById<Button>(R.id.addButton)
         val subtractButton = view.findViewById<Button>(R.id.subtractButton)
 
@@ -35,6 +36,9 @@ class ItemAdapter(private val items: MutableList<Item>, private val context: Con
         categoryText.text = item.category
         locationText.text = item.location
         priceText.text = "₹${item.price}"
+        if (buyPriceText != null) {
+            buyPriceText.text = "CP: ₹${item.buyprice}"
+        }
 
         // Critical: Make sure the buttons don't interfere with list item clicks
         addButton.setOnClickListener { v ->

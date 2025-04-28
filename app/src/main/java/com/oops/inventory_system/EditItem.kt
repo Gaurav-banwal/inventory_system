@@ -33,7 +33,7 @@ class EditItem : DialogFragment() {
         private const val ARG_PRICE = "price"
         private const val ARG_CP = "buyprice"
         
-        fun newInstance(trackId: Int, name: String, category: String, quantity: Int, location: String, price: Int): EditItem {
+        fun newInstance(trackId: Int, name: String, category: String, quantity: Int, location: String, price: Int, buyprice: Int): EditItem {
             val fragment = EditItem()
             val args = Bundle().apply {
                 putInt(ARG_TRACK_ID, trackId)
@@ -42,7 +42,7 @@ class EditItem : DialogFragment() {
                 putInt(ARG_QUANTITY, quantity)
                 putString(ARG_LOCATION, location)
                 putInt(ARG_PRICE, price)
-                putInt(ARG_CP,buyprice)
+                putInt(ARG_CP, buyprice)
             }
             fragment.arguments = args
             return fragment
@@ -101,6 +101,7 @@ class EditItem : DialogFragment() {
         quantityField.setText(quantity.toString())
         locationField.setText(location)
         priceField.setText(price.toString())
+        buypriceField.setText(buyprice.toString())
         
         // Make trackId field read-only since it's the document ID
         trackIdField.isEnabled = false
@@ -113,23 +114,21 @@ class EditItem : DialogFragment() {
             val newQuantityStr = quantityField.text.toString().trim()
             val newLocationStr = locationField.text.toString().trim()
             val newPriceStr = priceField.text.toString().trim()
-            
+            val newBuyPriceStr = buypriceField.text.toString().trim()
             if (newName.isEmpty() || newCategory.isEmpty() || newQuantityStr.isEmpty() || 
-                newLocationStr.isEmpty() || newPriceStr.isEmpty()) {
+                newLocationStr.isEmpty() || newPriceStr.isEmpty() || newBuyPriceStr.isEmpty()) {
                 Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            
             val newQuantity = newQuantityStr.toIntOrNull() ?: -1
             val newPrice = newPriceStr.toIntOrNull() ?: -1
-            
-            if (newQuantity < 0 || newPrice < 0) {
-                Toast.makeText(context, "Quantity and price must be valid numbers", Toast.LENGTH_SHORT).show()
+            val newBuyPrice = newBuyPriceStr.toIntOrNull() ?: -1
+            if (newQuantity < 0 || newPrice < 0 || newBuyPrice < 0) {
+                Toast.makeText(context, "Quantity, price, and cost price must be valid numbers", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            
             // Update the item in Firestore
-            updateItem(newName, newCategory, newQuantity, newLocationStr, newPrice)
+            updateItem(newName, newCategory, newQuantity, newLocationStr, newPrice, newBuyPrice)
         }
         
         cancelButton.setOnClickListener {
@@ -137,17 +136,16 @@ class EditItem : DialogFragment() {
         }
     }
     
-    private fun updateItem(newName: String, newCategory: String, newQuantity: Int, newLocation: String, newPrice: Int) {
+    private fun updateItem(newName: String, newCategory: String, newQuantity: Int, newLocation: String, newPrice: Int, newBuyPrice: Int) {
         val itemRef = db.collection("inventory").document(trackId.toString())
-        
         val updates = hashMapOf<String, Any>(
             "name" to newName,
             "category" to newCategory,
             "quantity" to newQuantity,
             "location" to newLocation,
-            "price" to newPrice
+            "price" to newPrice,
+            "buyprice" to newBuyPrice
         )
-        
         itemRef.update(updates)
             .addOnSuccessListener {
                 Toast.makeText(context, "Item updated successfully", Toast.LENGTH_SHORT).show()

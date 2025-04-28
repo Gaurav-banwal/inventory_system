@@ -33,6 +33,7 @@ class Details : AppCompatActivity() {
         val itemCategory = intent.getStringExtra("item_category") ?: "N/A"
         val itemLocation = intent.getStringExtra("item_location") ?: "N/A"
         val itemPrice = intent.getStringExtra("item_price") ?: "0"
+        val itemBuyPrice = intent.getStringExtra("item_buyprice") ?: "0"
 
         // Set the data to the TextViews
         findViewById<TextView>(R.id.itemname).text = itemName
@@ -40,6 +41,7 @@ class Details : AppCompatActivity() {
         findViewById<TextView>(R.id.itemQuantity).text = "Quantity: $itemQuantity"
         findViewById<TextView>(R.id.itemLocation).text = "Location: $itemLocation"
         findViewById<TextView>(R.id.marketPrice).text = "Price: ₹$itemPrice"
+        findViewById<TextView>(R.id.costPrice).text = "Cost Price: ₹$itemBuyPrice"
 
         // Display category in the title or elsewhere if needed
         supportActionBar?.title = "$itemName Details"
