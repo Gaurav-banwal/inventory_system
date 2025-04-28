@@ -44,9 +44,29 @@ class selection : AppCompatActivity() {
         val searchView = findViewById<androidx.appcompat.widget.SearchView>(R.id.search_view)
         searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
+                if (query.isNullOrBlank()) return false
+                val trimmed = query.trim()
+                // Try to find by ID
+                val byId = itemsList.find { it.trackId.toString() == trimmed }
+                if (byId != null) {
+                    openItemDetails(byId)
+                    return true
+                }
+                // Try to find by name (case-insensitive)
+                val byName = itemsList.find { it.name.equals(trimmed, ignoreCase = true) }
+                if (byName != null) {
+                    openItemDetails(byName)
+                    return true
+                }
+                // Try partial match
+                val partial = itemsList.find { it.name.contains(trimmed, ignoreCase = true) }
+                if (partial != null) {
+                    openItemDetails(partial)
+                    return true
+                }
+                Toast.makeText(this@selection, "Item not found", Toast.LENGTH_SHORT).show()
+                return true
             }
-            
             override fun onQueryTextChange(newText: String?): Boolean {
                 filterItems(newText)
                 return true
