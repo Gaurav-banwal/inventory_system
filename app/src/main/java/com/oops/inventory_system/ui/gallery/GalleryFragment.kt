@@ -67,6 +67,38 @@ class GalleryFragment : Fragment() {
             // Load items from Firestore instead of adding manually
             loadItemsFromFirestore()
             
+            // SearchView logic
+            val searchView = view.findViewById<androidx.appcompat.widget.SearchView>(R.id.search_view)
+            searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    if (query.isNullOrBlank()) return false
+                    val trimmed = query.trim()
+                    // Try to find by ID
+                    val byId = itemList.find { it.trackId.toString() == trimmed }
+                    if (byId != null) {
+                        openEditItemDialog(byId)
+                        return true
+                    }
+                    // Try to find by name (case-insensitive)
+                    val byName = itemList.find { it.name.equals(trimmed, ignoreCase = true) }
+                    if (byName != null) {
+                        openEditItemDialog(byName)
+                        return true
+                    }
+                    // Try partial match
+                    val partial = itemList.find { it.name.contains(trimmed, ignoreCase = true) }
+                    if (partial != null) {
+                        openEditItemDialog(partial)
+                        return true
+                    }
+                    Toast.makeText(context, "No item found for: $trimmed", Toast.LENGTH_SHORT).show()
+                    return true
+                }
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+            })
+
             // Handle item clicks to edit
             listView.setOnItemClickListener { _, _, position, _ ->
                 Toast.makeText(context, "Clicked on item: ${itemList[position].name}", Toast.LENGTH_SHORT).show()
