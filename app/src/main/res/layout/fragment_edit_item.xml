@@ -146,6 +146,28 @@
                 tools:ignore="TouchTargetSizeCheck" />
         </LinearLayout>
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="132dp"
+                android:layout_height="wrap_content"
+                android:text="CP"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/editCP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="COST price"
+                android:padding="8dp"
+                android:inputType="number"
+                tools:ignore="TouchTargetSizeCheck" />
+        </LinearLayout>
+
         <!-- Buttons -->
         <LinearLayout
             android:layout_width="match_parent"

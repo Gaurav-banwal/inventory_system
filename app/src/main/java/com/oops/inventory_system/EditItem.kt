@@ -22,6 +22,7 @@ class EditItem : DialogFragment() {
     private var quantity: Int = 0
     private var location: String = ""
     private var price: Int = 0
+    private var buyprice:Int =0
 
     companion object {
         private const val ARG_TRACK_ID = "track_id"
@@ -30,6 +31,7 @@ class EditItem : DialogFragment() {
         private const val ARG_QUANTITY = "quantity"
         private const val ARG_LOCATION = "location"
         private const val ARG_PRICE = "price"
+        private const val ARG_CP = "buyprice"
         
         fun newInstance(trackId: Int, name: String, category: String, quantity: Int, location: String, price: Int): EditItem {
             val fragment = EditItem()
@@ -40,6 +42,7 @@ class EditItem : DialogFragment() {
                 putInt(ARG_QUANTITY, quantity)
                 putString(ARG_LOCATION, location)
                 putInt(ARG_PRICE, price)
+                putInt(ARG_CP,buyprice)
             }
             fragment.arguments = args
             return fragment
@@ -55,6 +58,7 @@ class EditItem : DialogFragment() {
             quantity = it.getInt(ARG_QUANTITY)
             location = it.getString(ARG_LOCATION) ?: ""
             price = it.getInt(ARG_PRICE)
+            buyprice = it.getInt(ARG_CP)
         }
     }
 
@@ -86,6 +90,7 @@ class EditItem : DialogFragment() {
         val quantityField = view.findViewById<EditText>(R.id.editQuantity)
         val locationField = view.findViewById<EditText>(R.id.editLocation)
         val priceField = view.findViewById<EditText>(R.id.editPrice)
+        val buypriceField = view.findViewById<EditText>(R.id.editCP)
         val updateButton = view.findViewById<Button>(R.id.updateButton)
         val cancelButton = view.findViewById<Button>(R.id.cancelButton)
         
