@@ -24,12 +24,13 @@ class Login : AppCompatActivity() {
             val email = emailField.text.toString()
             val password = passwordField.text.toString()
 
+            //TRIES TO SIGN WITH EMAIL AND PASSWORD
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainActivity::class.java)) // Navigate to main screen
+                    startActivity(Intent(this, MainActivity::class.java)) // this navigates to the main screen after the login is successful
                 } else {
-                    Toast.makeText(this, "Login Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Login Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show() // shows the exception that caused login to fail
                 }
             }
         }

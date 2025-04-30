@@ -30,12 +30,13 @@ class Register : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            //CREATE USER WITH NEW EMAIL AND PASSWORD
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, Login::class.java)) // Redirect to login screen
+                    startActivity(Intent(this, Login::class.java)) // redirects to the login page after registration is successful
                 } else {
-                    Toast.makeText(this, "Registration Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Registration Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show() //shows the exception that caused registration to fail
                 }
             }
         }
