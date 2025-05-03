@@ -35,7 +35,7 @@ class Details : AppCompatActivity() {
         val itemPrice = intent.getStringExtra("item_price") ?: "0"
         val itemBuyPrice = intent.getStringExtra("item_buyprice") ?: "0"
 
-        // Set the data to the TextViews
+        // set the data to the TextViews
         findViewById<TextView>(R.id.itemname).text = itemName
         findViewById<TextView>(R.id.productId).text = "Product ID: $itemId"
         findViewById<TextView>(R.id.itemQuantity).text = "Quantity: $itemQuantity"
@@ -46,7 +46,7 @@ class Details : AppCompatActivity() {
         // Display category in the title or elsewhere if needed
         supportActionBar?.title = "$itemName Details"
         
-        // Back button handling
+        // back button
         val backButton = findViewById<Button>(R.id.button_back)
         backButton.setOnClickListener {
             finish() // Properly closes the activity

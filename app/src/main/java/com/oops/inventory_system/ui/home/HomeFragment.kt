@@ -58,7 +58,8 @@ class HomeFragment : Fragment() {
 
         return root
     }
-    
+
+    //search in home bar
     private fun performSearch(query: String) {
         Toast.makeText(context, "Searching for: $query", Toast.LENGTH_SHORT).show()
         
@@ -71,7 +72,7 @@ class HomeFragment : Fragment() {
             searchByName(query)
         }
     }
-    
+    //search by id
     private fun searchByTrackId(trackId: String) {
         db.collection("inventory").document(trackId)
             .get()
@@ -88,7 +89,7 @@ class HomeFragment : Fragment() {
                 Toast.makeText(context, "Search failed: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
-    
+    //search by name
     private fun searchByName(name: String) {
         db.collection("inventory")
             .whereEqualTo("name", name)  // Exact match first
@@ -106,10 +107,10 @@ class HomeFragment : Fragment() {
                 Toast.makeText(context, "Search failed: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
-    
+    //partial name , sometimes lazyness
     private fun searchByPartialName(name: String) {
         // Since Firestore doesn't support direct partial string search,
-        // we'll get all inventory items and filter on the client side
+        // we'll get all inventory items and filter on the app itself
         db.collection("inventory")
             .get()
             .addOnSuccessListener { documents ->
@@ -121,12 +122,12 @@ class HomeFragment : Fragment() {
                 // Find first item with name containing search term (case insensitive)
                 val matchingDocument = documents.find { 
                     val itemName = it.getString("name") ?: ""
-                    itemName.contains(name, ignoreCase = true) 
+                    itemName.contains(name, ignoreCase = true) //checking here for partial string
                 }
-                
+                //if found
                 if (matchingDocument != null) {
                     openItemDetails(matchingDocument)
-                } else {
+                } else {//if not
                     Toast.makeText(context, "No items found matching: $name", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -134,16 +135,16 @@ class HomeFragment : Fragment() {
                 Toast.makeText(context, "Search failed: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
-    
+    //opening details
     private fun openItemDetails(document: com.google.firebase.firestore.DocumentSnapshot) {
-        try {
+        try {//fetching from firebase
             val trackId = (document.get("trackId") as? Number)?.toInt() ?: 0
             val name = document.getString("name") ?: "Unknown"
             val quantity = (document.get("quantity") as? Number)?.toInt() ?: 0
             val category = document.getString("category") ?: ""
             val location = document.getString("location") ?: ""
             val price = (document.get("price") as? Number)?.toInt() ?: 0
-            
+            //transfering it to details
             val intent = Intent(requireContext(), Details::class.java).apply {
                 putExtra("item_name", name)
                 putExtra("item_id", trackId.toString())
@@ -191,7 +192,7 @@ class HomeFragment : Fragment() {
             openCategory("Groceries")
         }
     }
-
+//fucntion to open categroy
     private fun openCategory(category: String) {
         val intent = Intent(requireContext(), selection::class.java)
         intent.putExtra("category_name", category) // Pass category name

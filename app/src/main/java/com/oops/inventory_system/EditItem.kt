@@ -25,6 +25,7 @@ class EditItem : DialogFragment() {
     private var buyprice:Int =0
 
     companion object {
+        //hash key for intent
         private const val ARG_TRACK_ID = "track_id"
         private const val ARG_NAME = "name"
         private const val ARG_CATEGORY = "category"
@@ -35,6 +36,7 @@ class EditItem : DialogFragment() {
         
         fun newInstance(trackId: Int, name: String, category: String, quantity: Int, location: String, price: Int, buyprice: Int): EditItem {
             val fragment = EditItem()
+            //getting details
             val args = Bundle().apply {
                 putInt(ARG_TRACK_ID, trackId)
                 putString(ARG_NAME, name)
@@ -48,7 +50,7 @@ class EditItem : DialogFragment() {
             return fragment
         }
     }
-    
+    //2
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -61,14 +63,14 @@ class EditItem : DialogFragment() {
             buyprice = it.getInt(ARG_CP)
         }
     }
-
+//1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_edit_item, container, false)
     }
-
+//3
     override fun onStart() {
         super.onStart()
         dialog?.let {
@@ -94,7 +96,7 @@ class EditItem : DialogFragment() {
         val updateButton = view.findViewById<Button>(R.id.updateButton)
         val cancelButton = view.findViewById<Button>(R.id.cancelButton)
         
-        // Populate fields with existing item data
+        // output  fields with existing item data
         trackIdField.setText(trackId.toString())
         nameField.setText(name)
         categoryField.setText(category)
@@ -108,7 +110,7 @@ class EditItem : DialogFragment() {
         
         // Handle button clicks
         updateButton.setOnClickListener {
-            // Validate inputs
+            // getting inputs
             val newName = nameField.text.toString().trim()
             val newCategory = categoryField.text.toString().trim()
             val newQuantityStr = quantityField.text.toString().trim()
@@ -132,12 +134,13 @@ class EditItem : DialogFragment() {
         }
         
         cancelButton.setOnClickListener {
-            dismiss()
+            dismiss()//ends fragment
         }
     }
     
     private fun updateItem(newName: String, newCategory: String, newQuantity: Int, newLocation: String, newPrice: Int, newBuyPrice: Int) {
         val itemRef = db.collection("inventory").document(trackId.toString())
+        //encap it
         val updates = hashMapOf<String, Any>(
             "name" to newName,
             "category" to newCategory,
@@ -146,6 +149,7 @@ class EditItem : DialogFragment() {
             "price" to newPrice,
             "buyprice" to newBuyPrice
         )
+        //update it
         itemRef.update(updates)
             .addOnSuccessListener {
                 Toast.makeText(context, "Item updated successfully", Toast.LENGTH_SHORT).show()

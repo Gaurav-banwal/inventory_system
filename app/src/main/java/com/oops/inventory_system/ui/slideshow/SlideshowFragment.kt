@@ -33,10 +33,11 @@ class SlideshowFragment : Fragment() {
         return root
     }
 
+
     private fun updateProfitDisplay(profitData: ProfitData) {
         // Create Indian Rupee number format
         val numberFormat = NumberFormat.getCurrencyInstance(Locale("en", "IN"))
-        
+        //displaying output
         binding.currentMonthProfit.text = "Current Month Profit: ${numberFormat.format(profitData.currentMonthProfit)}"
         binding.lastMonthProfit.text = "Last Month Profit: ${numberFormat.format(profitData.lastMonthProfit)}"
     }

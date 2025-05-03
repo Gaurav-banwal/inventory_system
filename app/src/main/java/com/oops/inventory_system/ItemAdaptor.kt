@@ -10,7 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
-
+//not in use
 class ItemAdapter(private val items: MutableList<Item>, private val context: Context) : BaseAdapter() {
     private val db = FirebaseFirestore.getInstance()
 

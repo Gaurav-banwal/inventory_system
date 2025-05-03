@@ -1,6 +1,6 @@
 package com.oops.inventory_system.ui.gallery
 
-import android.content.Intent
+//for the frontend
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,28 +9,33 @@ import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+
+//for firebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+//for add item and changes in inventory
 import com.oops.inventory_system.AddItem
 import com.oops.inventory_system.EditItem
 import com.oops.inventory_system.Item
-import com.oops.inventory_system.ItemListAdapter
 import com.oops.inventory_system.R
 import com.oops.inventory_system.RemoveItem
+//not used
 import com.oops.inventory_system.SellItem
+
 import com.oops.inventory_system.databinding.FragmentGalleryBinding
-import com.oops.inventory_system.data.InventoryItem
-import com.oops.inventory_system.data.InventoryManager
+
 import android.widget.BaseAdapter
 import android.widget.TextView
 
 class GalleryFragment : Fragment() {
-
+          //list view in gallery
     private lateinit var listView: ListView
     private lateinit var adapter: ItemAdapter
+    //create a list of items
     private val itemList = mutableListOf<Item>()
+    //firebase thing
     private val db = FirebaseFirestore.getInstance()
+    //getting data from firebase
     private var firestoreListener: ListenerRegistration? = null
 
     private var _binding: FragmentGalleryBinding? = null
@@ -64,25 +69,31 @@ class GalleryFragment : Fragment() {
                     val trimmed = query.trim()
                     // Try to find by ID
                     val byId = itemList.find { it.trackId.toString() == trimmed }
+
+                    //if user search a item and find it , item will open edit item
                     if (byId != null) {
                         openEditItemDialog(byId)
                         return true
                     }
                     // Try to find by name (case-insensitive)
                     val byName = itemList.find { it.name.equals(trimmed, ignoreCase = true) }
+                    //doing same for search by name
                     if (byName != null) {
                         openEditItemDialog(byName)
                         return true
                     }
                     // Try partial match
+                    //try if item is half written , knor noodles and youu search knor
                     val partial = itemList.find { it.name.contains(trimmed, ignoreCase = true) }
                     if (partial != null) {
                         openEditItemDialog(partial)
                         return true
                     }
+
+                    //end case no item ofound
                     Toast.makeText(context, "No item found for: $trimmed", Toast.LENGTH_SHORT).show()
                     return true
-                }
+                }//
                 override fun onQueryTextChange(newText: String?): Boolean = false
             })
 
@@ -92,13 +103,15 @@ class GalleryFragment : Fragment() {
             }
 
             // Initialize and set button listeners
+            //for add item
+
             view.findViewById<Button>(R.id.addButton)?.setOnClickListener {
                 AddItem().show(childFragmentManager, "AddItemDialog")
             }
-
-            view.findViewById<Button>(R.id.sellButton)?.setOnClickListener {
-                SellItem().show(childFragmentManager, "SellItemDialog")
-            }
+//for sell item
+//            view.findViewById<Button>(R.id.sellButton)?.setOnClickListener {
+//                SellItem().show(childFragmentManager, "SellItemDialog")
+//            }
 
             view.findViewById<Button>(R.id.remove)?.setOnClickListener {
                 RemoveItem().show(parentFragmentManager, "RemoveItemDialog")
@@ -111,7 +124,8 @@ class GalleryFragment : Fragment() {
 
     private fun loadItemsFromFirestore() {
         itemList.clear()
-        
+        //setting  path in firebase
+        //addsnapshot for real time database
         firestoreListener = db.collection("inventory")
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
@@ -121,9 +135,10 @@ class GalleryFragment : Fragment() {
 
                 if (snapshot != null) {
                     itemList.clear()
-                    
+                    //get into doc for data
                     for (document in snapshot.documents) {
                         try {
+                            //catching data
                             val trackId = (document.get("trackId") as? Number)?.toInt() ?: 0
                             val name = document.getString("name") ?: "Unknown"
                             val quantity = (document.get("quantity") as? Number)?.toInt() ?: 0
@@ -131,7 +146,8 @@ class GalleryFragment : Fragment() {
                             val location = document.getString("location") ?: ""
                             val price = (document.get("price") as? Number)?.toInt() ?: 0
                             val buyprice = (document.get("buyprice") as? Number)?.toInt() ?: 0
-                            
+
+                            //storing in local for changes
                             val item = Item(
                                 trackId = trackId, 
                                 quantity = quantity, 
@@ -154,6 +170,7 @@ class GalleryFragment : Fragment() {
 
     private fun openEditItemDialog(item: Item) {
         try {
+            //transfer item data to edit item
             val editDialog = EditItem.newInstance(
                 trackId = item.trackId,
                 name = item.name,
@@ -163,22 +180,26 @@ class GalleryFragment : Fragment() {
                 price = item.price,
                 buyprice = item.buyprice
             )
+            //open edit item
             editDialog.show(childFragmentManager, "EditItemDialog")
         } catch (e: Exception) {
             Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_LONG).show()
             e.printStackTrace()
         }
     }
-
+//for that list view 1 tab
     private inner class ItemAdapter : BaseAdapter() {
+        //getting the size
         override fun getCount(): Int = itemList.size
+
         override fun getItem(position: Int): Any = itemList[position]
+    //getting item id for placing it
         override fun getItemId(position: Int): Long = position.toLong()
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view = convertView ?: LayoutInflater.from(requireContext())
                 .inflate(R.layout.item_layout, parent, false)
-
+//details of items
             val item = itemList[position]
             
             val nameText = view.findViewById<TextView>(R.id.itemName)
@@ -212,6 +233,7 @@ class GalleryFragment : Fragment() {
                     
                     // Update quantity
                     item.quantity--
+                    //getting it tranfer in fire base
                     db.collection("inventory")
                         .document(item.trackId.toString())
                         .update("quantity", item.quantity)
@@ -244,6 +266,7 @@ class GalleryFragment : Fragment() {
             return view
         }
     }
+//destroyer
 
     override fun onDestroyView() {
         super.onDestroyView()

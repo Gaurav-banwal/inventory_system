@@ -46,13 +46,13 @@ class selection : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query.isNullOrBlank()) return false
                 val trimmed = query.trim()
-                // Try to find by ID
+                // find by ID
                 val byId = itemsList.find { it.trackId.toString() == trimmed }
                 if (byId != null) {
                     openItemDetails(byId)
                     return true
                 }
-                // Try to find by name (case-insensitive)
+                //  find by name (case-insensitive)
                 val byName = itemsList.find { it.name.equals(trimmed, ignoreCase = true) }
                 if (byName != null) {
                     openItemDetails(byName)
@@ -86,7 +86,7 @@ class selection : AppCompatActivity() {
     }
 
     private fun fetchItemsByCategory(category: String) {
-        // Show loading indicator
+        // laoding stage (test)
         Toast.makeText(this, "Loading items...", Toast.LENGTH_SHORT).show()
         
         db.collection("inventory")
@@ -132,7 +132,7 @@ class selection : AppCompatActivity() {
                 Toast.makeText(this, "Error loading items: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
-
+//details when clicked and tranfering data to it
     private fun openItemDetails(item: Item) {
         val intent = Intent(this, Details::class.java).apply {
             putExtra("item_name", item.name)
@@ -153,7 +153,7 @@ class selection : AppCompatActivity() {
             return
         }
         
-        // Filter the items based on the query
+        //  items based on the query
         val filteredList = itemsList.filter { item ->
             item.name.contains(query, ignoreCase = true) || 
             item.trackId.toString() == query ||

@@ -107,6 +107,14 @@
                 android:text="Cost Price: "
                 android:textColor="#388E3C"
                 android:textSize="16sp" />
+            <TextView
+                android:id="@+id/costID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="Product ID: "
+                android:textColor="#2E7D32"
+                android:textSize="16sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

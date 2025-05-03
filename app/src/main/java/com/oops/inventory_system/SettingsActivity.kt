@@ -26,6 +26,7 @@ class SettingsActivity : AppCompatActivity() {
         
         Team Members:
         Contact: team.oops@example.com
+        https://github.com/Gaurav-banwal/inventory_system.git
     """.trimIndent()
 
             val builder = androidx.appcompat.app.AlertDialog.Builder(this)

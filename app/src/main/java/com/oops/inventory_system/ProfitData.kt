@@ -1,7 +1,7 @@
 package com.oops.inventory_system
 
 import java.util.Calendar
-
+//storing profit
 data class ProfitData(
     val currentMonthProfit: Double = 0.0,
     val lastMonthProfit: Double = 0.0
@@ -19,6 +19,7 @@ data class ProfitData(
         }
         
         fun getLastMonthProfit(): Double {
+            //getting month here
             val calendar = Calendar.getInstance()
             calendar.add(Calendar.MONTH, -1)
             val lastMonthKey = "${calendar.get(Calendar.YEAR)}-${calendar.get(Calendar.MONTH) + 1}"

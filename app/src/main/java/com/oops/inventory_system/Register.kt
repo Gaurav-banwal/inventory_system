@@ -12,7 +12,7 @@ class Register : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-
+ //firebase auth
         auth = FirebaseAuth.getInstance()
 
         val emailField = findViewById<EditText>(R.id.etRegisterEmail)
@@ -27,10 +27,10 @@ class Register : AppCompatActivity() {
 
             if (password != confirmPassword) {
                 Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+                return@setOnClickListener//looping
             }
 
-            //CREATE USER WITH NEW EMAIL AND PASSWORD
+            //Create user , and as add on is there it also do it in fire base
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show()

@@ -48,6 +48,7 @@ class AddItem : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val applyButton = view.findViewById<Button>(R.id.applyButton)
+        //making a list of id for easier control
         val textFields = listOf(
             view.findViewById<EditText>(R.id.textField1),
             view.findViewById<EditText>(R.id.textField2),
@@ -62,6 +63,7 @@ class AddItem : DialogFragment() {
 
         val textWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
+                //will open apply button only when all fields are enabled
                 applyButton.isEnabled = textFields.all { it.text.isNotEmpty() }
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -84,7 +86,7 @@ class AddItem : DialogFragment() {
                 Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
+//handling null safety
             val trackId = inputs[0].toIntOrNull() ?: -1
             val name = inputs[1]
             val category = inputs[2]
@@ -92,7 +94,7 @@ class AddItem : DialogFragment() {
             val location = inputs[4]
             val price = inputs[5].toIntOrNull() ?: -1
             val buyprice = inputs[6].toIntOrNull() ?: -1
-
+//checking things incorrect inputs
             if (price < 0 || quantity < 0 || trackId < 0 || buyprice < 0) {
                 Toast.makeText(requireContext(), "Invalid Track ID, Price, Cost Price or Quantity", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -107,7 +109,7 @@ class AddItem : DialogFragment() {
                 "price" to price,
                 "buyprice" to buyprice
             )
-
+//opening  firestore manger
             val firestoreManager = FirestoreManager()
             firestoreManager.addItem(
                 itemData["trackId"] as Int,
