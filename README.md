@@ -87,4 +87,4 @@ Contributions are welcome! If you have suggestions for improving inventory logic
 Distributed under the **MIT License**. See the `LICENSE` file for more details.
 
 ---
-*Project Link: [YOUR REPO URL HERE]*
+*Project Link: https://github.com/Gaurav-banwal/inventory_system.git*
